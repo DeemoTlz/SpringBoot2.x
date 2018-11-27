@@ -2,6 +2,10 @@ server:
   port: 8081
 
 spring:
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
   datasource:
     name: springboot
     type: com.alibaba.druid.pool.DruidDataSource
