@@ -1,11 +1,13 @@
 package com.albrus.shiro.controller;
 
+import com.albrus.common.BaseController;
+import com.albrus.common.model.Rtn;
 import com.albrus.shiro.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
 
     @GetMapping(value= {"/", "/index"})
     public String index() {
@@ -14,17 +16,11 @@ public class LoginController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login(@RequestParam("user") String user, @RequestParam("password") String password) {
-        System.out.println("user:" + user + ", password:" + password);
-
-        return "{\"code_\": 0}";
-    }
-
-    @PostMapping(value = "/login2")
-    public String login(@RequestBody User user) {
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public Rtn login(@RequestBody User user) {
         System.out.println("user: " + user);
 
-        return "{\"code_\": 0}";
+        return super.success();
     }
 }
