@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
@@ -12,16 +14,25 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 public class GeneratorServiceEntity {
 
     public static void main(String args[]) {
-        String packageName = "com.albrus.common";
+        String packageName = "com.albrus.shiro";
         // generateByTables(false, packageName, "albrus_consume_cost");
-        generateByTables(packageName, "albrus_consume_cost");
+        generateByTables(packageName, "ca_admin");
     }
 
     private static void generateByTables(boolean serviceNameStartWithI, String packageName, String... tableNames) {
         GlobalConfig config = new GlobalConfig();
-        String dbUrl = "jdbc:mysql://127.0.0.1:3306/albrus_account?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8";
+        String dbUrl = "jdbc:mysql://127.0.0.1:3306/cyberaudit_conf?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
+                .setTypeConvert(new MySqlTypeConvert() {
+                    // 自定义数据库表字段类型转换【可选】
+                    @Override
+                    public DbColumnType processTypeConvert(String fieldType) {
+                        System.out.println("转换类型：" + fieldType);
+                        // 注意！！processTypeConvert 存在默认类型转换，如果不是你要的效果请自定义返回、非如下直接返回。
+                        return super.processTypeConvert(fieldType);
+                    }
+                })
                 .setUrl(dbUrl)
                 .setUsername("root")
                 .setPassword("cyberaudit")
@@ -44,12 +55,12 @@ public class GeneratorServiceEntity {
         strategyConfig.setRestControllerStyle(true);
         strategyConfig.setSuperControllerClass("com.albrus.common.BaseController");
 
-        config.setActiveRecord(false)
+        config.setActiveRecord(true)
                 .setBaseResultMap(true)
                 .setBaseColumnList(true)
-                .setAuthor("K神带你飞")
+                .setAuthor("albrus")
                 .setEnableCache(false)
-                .setOutputDir("D:\\WorkSpace\\IDEA\\albrusAccount\\albrus-common\\src\\main\\java")
+                .setOutputDir("D:\\WorkSpace\\IDEA\\albrusAccount\\albrus-shiro\\src\\main\\java")
                 .setFileOverride(true);
         if (!serviceNameStartWithI) {
             config.setServiceName("%sService");
@@ -63,6 +74,7 @@ public class GeneratorServiceEntity {
                                 .setParent(packageName)
                                 .setController("controller")
                                 .setEntity("entity")
+                                .setXml("mapper.mapping")
                 ).execute();
     }
 
