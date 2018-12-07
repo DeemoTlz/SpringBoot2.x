@@ -36,5 +36,4 @@ public class AlbrusUserController extends BaseController {
 
         return super.success("", service.list());
     }
-
 }

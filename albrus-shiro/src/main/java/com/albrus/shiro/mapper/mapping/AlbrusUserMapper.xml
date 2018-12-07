@@ -10,22 +10,14 @@
     <result column="update_by" property="updateBy" />
     <result column="update_time" property="updateTime" />
         <result column="username" property="username" />
-        <result column="desc" property="desc" />
         <result column="password" property="password" />
-        <result column="logon_ip1" property="logonIp1" />
-        <result column="logon_ip2" property="logonIp2" />
-        <result column="logon_ip3" property="logonIp3" />
-        <result column="log_mac1" property="logMac1" />
-        <result column="log_mac2" property="logMac2" />
-        <result column="log_mac3" property="logMac3" />
-        <result column="block" property="block" />
-        <result column="block_time" property="blockTime" />
         <result column="begin_time" property="beginTime" />
         <result column="end_time" property="endTime" />
         <result column="update_pwd_time" property="updatePwdTime" />
         <result column="predefined" property="predefined" />
-        <result column="deleted" property="deleted" />
         <result column="pwd_policy" property="pwdPolicy" />
+        <result column="descript" property="descript" />
+        <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -35,7 +27,7 @@
         generate_time,
         update_by,
         update_time,
-        username, `desc`, `password`, logon_ip1, logon_ip2, logon_ip3, log_mac1, log_mac2, log_mac3, block, block_time, begin_time, end_time, update_pwd_time, predefined, deleted, pwd_policy
+        username, password, begin_time, end_time, update_pwd_time, predefined, pwd_policy, descript, deleted
     </sql>
 
 </mapper>
