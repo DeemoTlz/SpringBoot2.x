@@ -5,16 +5,25 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.albrus.consume.entity.ConsumeCost">
     <result column="id" property="id" />
+    <result column="generate_by" property="generateBy" />
+    <result column="generate_time" property="generateTime" />
+    <result column="update_by" property="updateBy" />
+    <result column="update_time" property="updateTime" />
         <result column="consume_type" property="consumeType" />
         <result column="consume_money" property="consumeMoney" />
         <result column="consume_date" property="consumeDate" />
         <result column="consume_user" property="consumeUser" />
+        <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        consume_type, consume_money, consume_date, consume_user
+        generate_by,
+        generate_time,
+        update_by,
+        update_time,
+        consume_type, consume_money, consume_date, consume_user, deleted
     </sql>
 
 </mapper>

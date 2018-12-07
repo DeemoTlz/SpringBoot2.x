@@ -5,6 +5,7 @@ import com.albrus.common.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 
 /**
  * <p>
@@ -39,6 +40,9 @@ public class ConsumeCost extends BaseEntity<ConsumeCost> {
      */
     private Integer consumeUser;
 
+    @TableLogic
+    private Integer deleted;
+
     public Integer getConsumeType() {
         return consumeType;
     }
@@ -67,6 +71,13 @@ public class ConsumeCost extends BaseEntity<ConsumeCost> {
     public void setConsumeUser(Integer consumeUser) {
         this.consumeUser = consumeUser;
     }
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -80,6 +91,7 @@ public class ConsumeCost extends BaseEntity<ConsumeCost> {
         ", consumeMoney=" + consumeMoney +
         ", consumeDate=" + consumeDate +
         ", consumeUser=" + consumeUser +
+        ", deleted=" + deleted +
         "}";
     }
 }
