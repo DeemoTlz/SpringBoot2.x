@@ -1,4 +1,4 @@
-package com.albrus.common;
+package com.albrus.common.controller;
 
 import com.albrus.common.model.ErrorRtn;
 import com.albrus.common.model.Rtn;

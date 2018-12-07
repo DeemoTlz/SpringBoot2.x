@@ -22,6 +22,7 @@
         <module>albrus-main</module>
         <module>albrus-shiro</module>
         <module>albrus-common</module>
+        <module>albrus-consume</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package com.albrus.common.model;
+package com.albrus.common.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

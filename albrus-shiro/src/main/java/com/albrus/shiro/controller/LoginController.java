@@ -1,6 +1,6 @@
 package com.albrus.shiro.controller;
 
-import com.albrus.common.BaseController;
+import com.albrus.common.controller.BaseController;
 import com.albrus.common.model.Rtn;
 import com.albrus.shiro.entity.User;
 import org.springframework.stereotype.Controller;

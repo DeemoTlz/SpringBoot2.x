@@ -12,9 +12,9 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 public class GeneratorServiceEntity {
 
     public static void main(String args[]) {
-        String packageName = "com.albrus.shiro";
+        String packageName = "com.albrus.consume";
         // generateByTables(false, packageName, "albrus_consume_cost");
-        generateByTables(packageName, "albrus_user");
+        generateByTables(packageName, "albrus_consume_cost");
     }
 
     private static void generateByTables(boolean serviceNameStartWithI, String packageName, String... tableNames) {
@@ -31,24 +31,25 @@ public class GeneratorServiceEntity {
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
                 .setNaming(NamingStrategy.underline_to_camel)
+                .setTablePrefix("albrus_")
                 .setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
 
         //是否继承实体bean父类
-        strategyConfig.setSuperEntityClass("com.albrus.common.model.BaseEntity");
+        strategyConfig.setSuperEntityClass("com.albrus.common.entity.BaseEntity");
         strategyConfig.setSuperEntityColumns("id", "generate_by", "generate_time", "update_by", "update_time");
 
-        //strategyConfig.setLogicDeleteFieldName("deleted");
+        strategyConfig.setLogicDeleteFieldName("deleted");
 
         //所有的Controller使用@RestController
         strategyConfig.setRestControllerStyle(true);
-        strategyConfig.setSuperControllerClass("com.albrus.common.BaseController");
+        strategyConfig.setSuperControllerClass("com.albrus.common.controller.BaseController");
 
         config.setActiveRecord(true)
                 .setBaseResultMap(true)
                 .setBaseColumnList(true)
                 .setAuthor("albrus")
                 .setEnableCache(false)
-                .setOutputDir("D:\\WorkSpace\\IDEA\\albrusAccount\\albrus-shiro\\src\\main\\java")
+                .setOutputDir("D:\\WorkSpace\\IDEA\\albrusAccount\\albrus-consume\\src\\main\\java")
                 .setFileOverride(true);
         if (!serviceNameStartWithI) {
             config.setServiceName("%sService");

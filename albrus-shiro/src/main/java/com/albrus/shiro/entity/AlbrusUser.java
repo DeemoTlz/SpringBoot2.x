@@ -1,6 +1,6 @@
 package com.albrus.shiro.entity;
 
-import com.albrus.common.model.BaseEntity;
+import com.albrus.common.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,14 +1,14 @@
-package com.albrus.shiro.controller;
+package com.albrus.consume.controller;
 
 
-import com.albrus.common.controller.BaseController;
 import com.albrus.common.model.Rtn;
-import com.albrus.shiro.service.IAlbrusUserService;
+import com.albrus.consume.service.IConsumeCostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+import com.albrus.common.controller.BaseController;
 
 /**
  * <p>
@@ -19,18 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2018-12-07
  */
 @RestController
-@RequestMapping("/albrusUser")
-public class AlbrusUserController extends BaseController {
+@RequestMapping("/consumeCost")
+public class ConsumeCostController extends BaseController {
 
-    private final
-    IAlbrusUserService service;
+    private final IConsumeCostService service;
 
     @Autowired
-    public AlbrusUserController(IAlbrusUserService service) {
+    public ConsumeCostController(IConsumeCostService service) {
         this.service = service;
     }
 
-    @GetMapping(value= {"/user"})
+    @GetMapping(value= {"/cost"})
     public Rtn index() {
         System.out.println("welcome!");
 

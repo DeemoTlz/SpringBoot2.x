@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="albrus-common" />
+        <module name="albrus-consume" />
         <module name="albrus-main" />
         <module name="albrus-shiro" />
       </profile>
@@ -15,6 +16,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="albrus-common" options="-parameters" />
+      <module name="albrus-consume" options="-parameters" />
       <module name="albrus-main" options="-parameters" />
       <module name="albrus-shiro" options="-parameters" />
     </option>
