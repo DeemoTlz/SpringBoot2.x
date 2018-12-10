@@ -1,6 +1,6 @@
 package com.albrus.shiro.service;
 
-import com.albrus.shiro.entity.AlbrusUser;
+import com.albrus.shiro.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author albrus
- * @since 2018-12-07
+ * @since 2018-12-10
  */
-public interface IAlbrusUserService extends IService<AlbrusUser> {
+public interface IUserService extends IService<User> {
 
 }

@@ -1,6 +1,6 @@
 package com.albrus.shiro.mapper;
 
-import com.albrus.shiro.entity.AlbrusUser;
+import com.albrus.shiro.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author albrus
- * @since 2018-12-07
+ * @since 2018-12-10
  */
-public interface AlbrusUserMapper extends BaseMapper<AlbrusUser> {
+public interface UserMapper extends BaseMapper<User> {
 
 }
