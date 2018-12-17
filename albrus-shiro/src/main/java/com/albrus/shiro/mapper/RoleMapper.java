@@ -1,16 +1,16 @@
 package com.albrus.shiro.mapper;
 
-import com.albrus.shiro.entity.User;
+import com.albrus.shiro.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 角色表 Mapper 接口
  * </p>
  *
  * @author albrus
  * @since 2018-12-17
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface RoleMapper extends BaseMapper<Role> {
 
 }

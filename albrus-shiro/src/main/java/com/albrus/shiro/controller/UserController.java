@@ -16,24 +16,24 @@ import com.albrus.common.controller.BaseController;
  * </p>
  *
  * @author albrus
- * @since 2018-12-10
+ * @since 2018-12-17
  */
 @RestController
 @RequestMapping("/shiro/user")
 public class UserController extends BaseController {
 
-    private final
-    IUserService service;
+    private final IUserService service;
 
     @Autowired
     public UserController(IUserService service) {
         this.service = service;
     }
 
-    @GetMapping(value= {"/user"})
+    @GetMapping
     public Rtn index() {
         System.out.println("welcome!");
 
-        return super.success("", service.list());
+        return super.success("123", service.list());
     }
+
 }

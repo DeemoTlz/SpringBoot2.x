@@ -1,16 +1,16 @@
 package com.albrus.shiro.service;
 
-import com.albrus.shiro.entity.User;
+import com.albrus.shiro.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 角色表 服务类
  * </p>
  *
  * @author albrus
  * @since 2018-12-17
  */
-public interface IUserService extends IService<User> {
+public interface IRoleService extends IService<Role> {
 
 }
