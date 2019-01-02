@@ -11,6 +11,7 @@
     <result column="update_time" property="updateTime" />
         <result column="username" property="username" />
         <result column="password" property="password" />
+        <result column="salt" property="salt" />
         <result column="begin_time" property="beginTime" />
         <result column="end_time" property="endTime" />
         <result column="update_pwd_time" property="updatePwdTime" />
@@ -27,7 +28,7 @@
         generate_time,
         update_by,
         update_time,
-        username, password, begin_time, end_time, update_pwd_time, predefined, pwd_policy, descript, deleted
+        username, password, salt, begin_time, end_time, update_pwd_time, predefined, pwd_policy, descript, deleted
     </sql>
 
 </mapper>

@@ -27,6 +27,10 @@ spring:
       max-wait: 60000
       #间隔多久进行一次检测，检测需要关闭的空闲连接
       time-between-eviction-runs-millis: 60000
+    #jpa:
+      #database: mysql
+      #show-sql: true
+
 
   thymeleaf:
     prefix: classpath:/templates/

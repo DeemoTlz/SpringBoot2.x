@@ -2,18 +2,20 @@ package com.albrus.shiro.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.albrus.common.entity.BaseEntity;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableLogic;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author albrus
- * @since 2018-12-17
+ * @since 2019-01-02
  */
 @TableName("albrus_user")
 public class User extends BaseEntity<User> {
@@ -23,6 +25,11 @@ public class User extends BaseEntity<User> {
     private String username;
 
     private String password;
+
+    /**
+     * 加密盐值
+     */
+    private String salt;
 
     private LocalDateTime beginTime;
 
@@ -49,6 +56,7 @@ public class User extends BaseEntity<User> {
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getPassword() {
         return password;
     }
@@ -56,6 +64,15 @@ public class User extends BaseEntity<User> {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     public LocalDateTime getBeginTime() {
         return beginTime;
     }
@@ -63,6 +80,7 @@ public class User extends BaseEntity<User> {
     public void setBeginTime(LocalDateTime beginTime) {
         this.beginTime = beginTime;
     }
+
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -70,6 +88,7 @@ public class User extends BaseEntity<User> {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
     public LocalDateTime getUpdatePwdTime() {
         return updatePwdTime;
     }
@@ -77,6 +96,7 @@ public class User extends BaseEntity<User> {
     public void setUpdatePwdTime(LocalDateTime updatePwdTime) {
         this.updatePwdTime = updatePwdTime;
     }
+
     public Integer getPredefined() {
         return predefined;
     }
@@ -84,6 +104,7 @@ public class User extends BaseEntity<User> {
     public void setPredefined(Integer predefined) {
         this.predefined = predefined;
     }
+
     public Integer getPwdPolicy() {
         return pwdPolicy;
     }
@@ -91,6 +112,7 @@ public class User extends BaseEntity<User> {
     public void setPwdPolicy(Integer pwdPolicy) {
         this.pwdPolicy = pwdPolicy;
     }
+
     public String getDescript() {
         return descript;
     }
@@ -98,6 +120,7 @@ public class User extends BaseEntity<User> {
     public void setDescript(String descript) {
         this.descript = descript;
     }
+
     public Integer getDeleted() {
         return deleted;
     }
@@ -114,15 +137,16 @@ public class User extends BaseEntity<User> {
     @Override
     public String toString() {
         return "User{" +
-        "username=" + username +
-        ", password=" + password +
-        ", beginTime=" + beginTime +
-        ", endTime=" + endTime +
-        ", updatePwdTime=" + updatePwdTime +
-        ", predefined=" + predefined +
-        ", pwdPolicy=" + pwdPolicy +
-        ", descript=" + descript +
-        ", deleted=" + deleted +
-        "}";
+                "username=" + username +
+                ", password=" + password +
+                ", salt=" + salt +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", updatePwdTime=" + updatePwdTime +
+                ", predefined=" + predefined +
+                ", pwdPolicy=" + pwdPolicy +
+                ", descript=" + descript +
+                ", deleted=" + deleted +
+                "}";
     }
 }
