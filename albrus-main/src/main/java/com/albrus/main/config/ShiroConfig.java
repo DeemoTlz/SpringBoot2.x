@@ -1,7 +1,6 @@
 package com.albrus.main.config;
 
 import com.albrus.shiro.filter.AjaxAuthenticationFilter;
-import com.albrus.shiro.model.MyWebDelegatingSubject;
 import com.albrus.shiro.realms.AuthRealm;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -11,13 +10,9 @@ import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.subject.support.DelegatingSubject;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.Cookie;
-import org.apache.shiro.web.servlet.ShiroHttpSession;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -84,11 +79,11 @@ public class ShiroConfig {
          * 关闭shiro自带的session，详情见文档
          * http://shiro.apache.org/session-management.html#SessionManagement-StatelessApplications%28Sessionless%29
          */
-        /*DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
         defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
-        securityManager.setSubjectDAO(subjectDAO);*/
+        securityManager.setSubjectDAO(subjectDAO);
 
         return securityManager;
     }
