@@ -20,6 +20,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User getByName(String name) {
+
+        if (null == name) {
+            return null;
+        }
+
         User user = new User();
         user.setUsername(name);
 
