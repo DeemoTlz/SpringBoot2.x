@@ -30,7 +30,7 @@ public class JwtUtil {
                     .withClaim("username", username)
                     .build();
             //效验TOKEN
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
             return true;
         } catch (Exception exception) {
             return false;

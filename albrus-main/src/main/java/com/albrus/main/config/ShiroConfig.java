@@ -1,9 +1,9 @@
 package com.albrus.main.config;
 
 import com.albrus.shiro.filter.AjaxAuthenticationFilter;
+import com.albrus.shiro.model.JwtAndHashedCredentialsMatcher;
 import com.albrus.shiro.realms.AuthRealm;
 import com.google.common.collect.Maps;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
@@ -90,7 +90,7 @@ public class ShiroConfig {
 
     // 登录、权限认证
     @Bean
-    public AuthRealm authRealm(HashedCredentialsMatcher credentialsMatcher) {
+    public AuthRealm authRealm(JwtAndHashedCredentialsMatcher credentialsMatcher) {
         AuthRealm authRealm = new AuthRealm();
         authRealm.setCredentialsMatcher(credentialsMatcher);
 
@@ -98,8 +98,8 @@ public class ShiroConfig {
     }
 
     @Bean
-    public HashedCredentialsMatcher credentialsMatcher() {
-        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+    public JwtAndHashedCredentialsMatcher credentialsMatcher() {
+        JwtAndHashedCredentialsMatcher credentialsMatcher = new JwtAndHashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName(Md5Hash.ALGORITHM_NAME);
         credentialsMatcher.setHashIterations(1024);
 

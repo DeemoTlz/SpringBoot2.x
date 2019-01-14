@@ -4,6 +4,7 @@ import com.albrus.common.model.ErrorRtn;
 import com.albrus.common.model.SuccessRtn;
 import com.albrus.common.utils.JwtUtil;
 import com.albrus.shiro.entity.User;
+import com.albrus.shiro.model.JWTToken;
 import com.albrus.shiro.model.JwtTokenCookie;
 import com.albrus.shiro.service.IUserService;
 import com.alibaba.druid.support.http.WebStatFilter;
@@ -12,9 +13,11 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.util.WebUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -77,7 +80,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         }
 
         if (!SecurityUtils.getSubject().isAuthenticated()) {
-            SecurityUtils.getSubject().login(new UsernamePasswordToken("albrus", "123456", false, request.getRemoteHost()));
+            SecurityUtils.getSubject().login(new JWTToken(username, "", false, request.getRemoteHost(), jwtToken));
         }
 
         return true;
@@ -96,7 +99,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         //String username = String.valueOf(token.getPrincipal());
-        String password = ((User)subject.getPrincipal()).getPassword();
+        String password = ((User) subject.getPrincipal()).getPassword();
 
         String jwtToken = JwtUtil.sign(token.getPrincipal().toString(), password);
 
@@ -134,10 +137,10 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
                 } else if (e instanceof ExcessiveAttemptsException) {
                     ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(603);
                     out.println(JSONObject.toJSONString(new ErrorRtn(603, "登录失败次数过多")));
-                } else if (e instanceof DisabledAccountException ) {
+                } else if (e instanceof DisabledAccountException) {
                     ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(604);
                     out.println(JSONObject.toJSONString(new ErrorRtn(604, "账号禁用")));
-                } else if (e instanceof ExpiredCredentialsException ) {
+                } else if (e instanceof ExpiredCredentialsException) {
                     ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(605);
                     out.println(JSONObject.toJSONString(new ErrorRtn(605, "账号过期")));
                 } else if (e instanceof UnsupportedTokenException) {
