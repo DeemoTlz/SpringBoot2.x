@@ -2,10 +2,10 @@ package com.albrus.shiro.filter;
 
 import com.albrus.common.model.ErrorRtn;
 import com.albrus.common.model.SuccessRtn;
-import com.albrus.common.utils.JwtUtil;
+import com.albrus.common.utils.JWTUtil;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.JWTToken;
-import com.albrus.shiro.model.JwtTokenCookie;
+import com.albrus.shiro.model.JWTTokenCookie;
 import com.albrus.shiro.service.IUserService;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.fastjson.JSONObject;
@@ -13,11 +13,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.util.WebUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -40,7 +38,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             try {
                 return this.checkJwtToken(request, jwtToken);
             } catch (AuthenticationException e) {
-                new JwtTokenCookie().removeFrom(WebUtils.toHttp(request), WebUtils.toHttp(response));
+                new JWTTokenCookie().removeFrom(WebUtils.toHttp(request), WebUtils.toHttp(response));
                 onLoginFailure(null, e, request, response);
                 return false;
             }
@@ -55,7 +53,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
     private boolean checkJwtToken(ServletRequest request, String jwtToken) {
 
-        String username = JwtUtil.getUsername(jwtToken);
+        String username = JWTUtil.getUsername(jwtToken);
         if (null == username) {
             throw new UnsupportedTokenException();
         }
@@ -72,7 +70,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             throw new UnknownAccountException();
         }
 
-        if (!JwtUtil.verify(jwtToken, username, user.getPassword())) {
+        if (!JWTUtil.verify(jwtToken, username, user.getPassword())) {
             if (SecurityUtils.getSubject().isAuthenticated()) {
                 SecurityUtils.getSubject().logout();
             }
@@ -88,12 +86,12 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
     private String getAuthHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
-        return httpRequest.getHeader(JwtTokenCookie.getAuthorizationHeader());
+        return httpRequest.getHeader(JWTTokenCookie.getAuthorizationHeader());
     }
 
     private String getAuthCookie(ServletRequest request) {
 
-        return new JwtTokenCookie().readValue(WebUtils.toHttp(request), null);
+        return new JWTTokenCookie().readValue(WebUtils.toHttp(request), null);
     }
 
     @Override
@@ -101,9 +99,9 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         //String username = String.valueOf(token.getPrincipal());
         String password = ((User) subject.getPrincipal()).getPassword();
 
-        String jwtToken = JwtUtil.sign(token.getPrincipal().toString(), password);
+        String jwtToken = JWTUtil.sign(token.getPrincipal().toString(), password);
 
-        Cookie cookie = new JwtTokenCookie(jwtToken);
+        Cookie cookie = new JWTTokenCookie(jwtToken);
         cookie.saveTo(WebUtils.toHttp(request), WebUtils.toHttp(response));
 
         if (isAjax(request)) {

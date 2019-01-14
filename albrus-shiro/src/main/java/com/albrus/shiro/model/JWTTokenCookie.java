@@ -2,10 +2,10 @@ package com.albrus.shiro.model;
 
 import org.apache.shiro.web.servlet.SimpleCookie;
 
-public class JwtTokenCookie extends SimpleCookie {
+public class JWTTokenCookie extends SimpleCookie {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    public JwtTokenCookie() {
+    public JWTTokenCookie() {
         this.setName(AUTHORIZATION_HEADER);
         this.setValue(null);
         this.setComment(null); // Cookie的用处说明
@@ -17,7 +17,7 @@ public class JwtTokenCookie extends SimpleCookie {
         this.setHttpOnly(false); // 只有在http请求头中会带有此cookie的信息
     }
 
-    public JwtTokenCookie(String value) {
+    public JWTTokenCookie(String value) {
         this.setName(AUTHORIZATION_HEADER);
         this.setValue(value);
         this.setComment(null); // Cookie的用处说明

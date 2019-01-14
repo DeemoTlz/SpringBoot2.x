@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
 
-public class JwtUtil {
+public class JWTUtil {
     private static final int EXPIRE_TIME = 5 * 60 * 1000;
 
     public static int getExpireTime() {

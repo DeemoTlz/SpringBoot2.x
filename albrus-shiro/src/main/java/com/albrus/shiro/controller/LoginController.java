@@ -1,7 +1,7 @@
 package com.albrus.shiro.controller;
 
 import com.albrus.common.controller.BaseController;
-import com.albrus.shiro.model.JwtTokenCookie;
+import com.albrus.shiro.model.JWTTokenCookie;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class LoginController extends BaseController {
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityUtils.getSubject().logout();
-        new JwtTokenCookie().removeFrom(request, response);
+        new JWTTokenCookie().removeFrom(request, response);
 
         return "redirect:/login";
     }
