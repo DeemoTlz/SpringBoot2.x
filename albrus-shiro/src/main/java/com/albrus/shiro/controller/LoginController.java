@@ -26,7 +26,7 @@ public class LoginController extends BaseController {
         }
         System.out.println("to login...");
 
-        return "login";
+        return "index";
     }
 
     @GetMapping(value = "/logout")
