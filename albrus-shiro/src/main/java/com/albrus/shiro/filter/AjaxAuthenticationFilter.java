@@ -31,10 +31,11 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
 
-        //判断请求的请求头是否带上 "Authorization"
+        // 判断请求的请求头是否带上 "Authorization"
+        // String jwtToken = this.getAuthHeader(request);
         String jwtToken = this.getAuthCookie(request);
         if (null != jwtToken) {
-            //如果存在，则进入 executeLogin 方法执行登入，检查 token 是否正确
+            //如果存在，则进入 checkJwtToken 方法检查 token 是否正确
             try {
                 return this.checkJwtToken(request, jwtToken);
             } catch (AuthenticationException e) {
@@ -51,6 +52,15 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         return !this.isLoginRequest(request, response) && this.isPermissive(mappedValue);
     }
 
+    /**
+     *
+     * @ClassName checkJwtToken 验证token是否有效
+     *
+     * @author qi_jiahu
+     * @date 2019/1/21 10:31
+     * @Param [request, jwtToken]
+     * @return boolean true: 有效
+     */
     private boolean checkJwtToken(ServletRequest request, String jwtToken) {
 
         String username = JWTUtil.getUsername(jwtToken);
@@ -61,7 +71,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         ServletContext context = request.getServletContext();
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(context);
         if (null == ctx) {
-            return false;
+            throw new AuthenticationException();
         }
         IUserService userService = ctx.getBean(IUserService.class);
 
@@ -84,11 +94,29 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         return true;
     }
 
+    /**
+     *
+     * @ClassName getAuthHeader 从请求头中获取token字符串
+     *
+     * @author qi_jiahu
+     * @date 2019/1/21 10:30
+     * @Param [request]
+     * @return java.lang.String token字符串
+     */
     private String getAuthHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
         return httpRequest.getHeader(JWTTokenCookie.getAuthorizationHeader());
     }
 
+    /**
+     *
+     * @ClassName getAuthCookie 从cookie中获取token字符串
+     *
+     * @author qi_jiahu
+     * @date 2019/1/21 10:30
+     * @Param [request]
+     * @return java.lang.String token字符串
+     */
     private String getAuthCookie(ServletRequest request) {
 
         return new JWTTokenCookie().readValue(WebUtils.toHttp(request), null);
@@ -146,7 +174,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
                     out.println(JSONObject.toJSONString(new ErrorRtn(606, "Token无效")));
                 } else {
                     ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(607);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(607, "登录失败")));
+                    out.println(JSONObject.toJSONString(new ErrorRtn(607, "服务器一不小心被怪兽吃掉了Ծ‸Ծ")));
                 }
 
                 out.flush();
@@ -161,6 +189,15 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         return super.onLoginFailure(token, e, request, response);
     }
 
+    /**
+     *
+     * @ClassName isAjax 是否是ajax请求
+     *
+     * @author qi_jiahu
+     * @date 2019/1/21 10:32
+     * @Param [request]
+     * @return boolean true: 是
+     */
     private static boolean isAjax(ServletRequest request) {
         String header = ((HttpServletRequest) request).getHeader("X-Requested-With");
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.albrus.shiro.mapper.ResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.albrus.shiro.entity.Resource">
+    <result column="id" property="id" />
+    <result column="generate_by" property="generateBy" />
+    <result column="generate_time" property="generateTime" />
+    <result column="update_by" property="updateBy" />
+    <result column="update_time" property="updateTime" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="sort" property="sort" />
+        <result column="url" property="url" />
+        <result column="system_id" property="systemId" />
+        <result column="type" property="type" />
+        <result column="ico" property="ico" />
+        <result column="is_show" property="isShow" />
+        <result column="permission" property="permission" />
+        <result column="remarks" property="remarks" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        generate_by,
+        generate_time,
+        update_by,
+        update_time,
+        parent_id, name, sort, url, system_id, type, ico, is_show, permission, remarks, deleted
+    </sql>
+
+    <select id="getResourceByUserId" resultMap="BaseResultMap" parameterType="long">
+        SELECT DISTINCT albrus_resource.*
+        FROM `albrus_user_role`
+        INNER JOIN `albrus_role_resource`
+        ON albrus_user_role.`admin_id`=#{userId} AND albrus_user_role.`role_id`=albrus_role_resource.`role_id`
+        INNER JOIN `albrus_resource`
+        ON albrus_role_resource.`resource_id`=albrus_resource.`id`
+    </select>
+
+</mapper>

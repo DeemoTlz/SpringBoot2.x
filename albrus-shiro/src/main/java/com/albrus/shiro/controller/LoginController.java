@@ -21,7 +21,9 @@ public class LoginController extends BaseController {
 
     @GetMapping(value = "login")
     public String login() {
+
         if (SecurityUtils.getSubject().isAuthenticated()) {
+            System.out.println("already login...to index...");
             return "redirect:/";
         }
         System.out.println("to login...");
@@ -33,6 +35,8 @@ public class LoginController extends BaseController {
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityUtils.getSubject().logout();
         new JWTTokenCookie().removeFrom(request, response);
+
+        System.out.println("logout...to login...");
 
         return "redirect:/login";
     }

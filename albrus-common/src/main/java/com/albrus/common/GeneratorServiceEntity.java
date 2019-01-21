@@ -19,7 +19,7 @@ public class GeneratorServiceEntity {
         String packageName = "com.albrus";
         String modelName = "shiro";
 
-        generateByTables(packageName, modelName, "albrus_user");
+        generateByTables(packageName, modelName, "albrus_resource");
     }
 
     private static void generateByTables(String packageName, String modelName, String... tableNames) {
