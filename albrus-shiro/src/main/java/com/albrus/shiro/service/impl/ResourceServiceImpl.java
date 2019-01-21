@@ -2,6 +2,7 @@ package com.albrus.shiro.service.impl;
 
 import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.mapper.ResourceMapper;
+import com.albrus.shiro.model.ResourceBO;
 import com.albrus.shiro.service.IResourceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public List<Resource> getResourceByUserId(Long userId) {
+    public List<ResourceBO> getResourceByUserId(Long userId) {
         return mapper.getResourceByUserId(userId);
     }
 }

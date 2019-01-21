@@ -16,6 +16,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -27,6 +28,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
+
+    private final IUserService userService;
+
+    public AjaxAuthenticationFilter(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
@@ -68,12 +75,12 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             throw new UnsupportedTokenException();
         }
 
-        ServletContext context = request.getServletContext();
+        /*ServletContext context = request.getServletContext();
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(context);
         if (null == ctx) {
             throw new AuthenticationException();
         }
-        IUserService userService = ctx.getBean(IUserService.class);
+        IUserService userService = ctx.getBean(IUserService.class);*/
 
         User user = userService.getByName(username);
         if (null == user) {

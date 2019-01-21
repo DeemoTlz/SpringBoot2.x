@@ -4,11 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.albrus.shiro.entity.Resource">
-    <result column="id" property="id" />
-    <result column="generate_by" property="generateBy" />
-    <result column="generate_time" property="generateTime" />
-    <result column="update_by" property="updateBy" />
-    <result column="update_time" property="updateTime" />
+        <result column="id" property="id" />
+        <result column="generate_by" property="generateBy" />
+        <result column="generate_time" property="generateTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
         <result column="parent_id" property="parentId" />
         <result column="name" property="name" />
         <result column="sort" property="sort" />
@@ -22,6 +22,10 @@
         <result column="deleted" property="deleted" />
     </resultMap>
 
+    <resultMap id="BaseResultMapWithRoleName" type="com.albrus.shiro.model.ResourceBO" extends="BaseResultMap">
+        <result column="role_name" property="roleName" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
@@ -32,13 +36,19 @@
         parent_id, name, sort, url, system_id, type, ico, is_show, permission, remarks, deleted
     </sql>
 
-    <select id="getResourceByUserId" resultMap="BaseResultMap" parameterType="long">
-        SELECT DISTINCT albrus_resource.*
-        FROM `albrus_user_role`
-        INNER JOIN `albrus_role_resource`
-        ON albrus_user_role.`admin_id`=#{userId} AND albrus_user_role.`role_id`=albrus_role_resource.`role_id`
-        INNER JOIN `albrus_resource`
-        ON albrus_role_resource.`resource_id`=albrus_resource.`id`
+    <select id="getResourceByUserId" resultMap="BaseResultMapWithRoleName" parameterType="long">
+        SELECT DISTINCT
+          `albrus_role`.`role_name`,
+          `albrus_resource`.*
+        FROM
+          `albrus_user_role`
+          INNER JOIN `albrus_role_resource`
+            ON `albrus_user_role`.`admin_id` = #{userId}
+            AND `albrus_user_role`.`role_id` = `albrus_role_resource`.`role_id`
+          INNER JOIN `albrus_role`
+            ON `albrus_role`.`id` = `albrus_user_role`.`role_id`
+          INNER JOIN `albrus_resource`
+            ON `albrus_role_resource`.`resource_id` = `albrus_resource`.`id`
     </select>
 
 </mapper>

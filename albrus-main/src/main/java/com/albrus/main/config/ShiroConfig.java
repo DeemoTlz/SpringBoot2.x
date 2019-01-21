@@ -3,16 +3,19 @@ package com.albrus.main.config;
 import com.albrus.shiro.filter.AjaxAuthenticationFilter;
 import com.albrus.shiro.model.JWTAndHashedCredentialsMatcher;
 import com.albrus.shiro.realms.AuthRealm;
+import com.albrus.shiro.service.IUserService;
 import com.google.common.collect.Maps;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +24,13 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+    private final IUserService userService;
+
+    @Autowired
+    public ShiroConfig(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
@@ -40,7 +50,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         Map<String, Filter> filter = Maps.newLinkedHashMap();
-        filter.put("authc", new AjaxAuthenticationFilter());
+        filter.put("authc", new AjaxAuthenticationFilter(userService));
         shiroFilterFactoryBean.setFilters(filter);
 
         return shiroFilterFactoryBean;
@@ -88,10 +98,18 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    //加入注解的使用，不加入这个注解不生效
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
     // 登录、权限认证
     @Bean
     public AuthRealm authRealm(JWTAndHashedCredentialsMatcher credentialsMatcher) {
-        AuthRealm authRealm = new AuthRealm();
+        AuthRealm authRealm = new AuthRealm(userService);
         authRealm.setCredentialsMatcher(credentialsMatcher);
 
         return authRealm;

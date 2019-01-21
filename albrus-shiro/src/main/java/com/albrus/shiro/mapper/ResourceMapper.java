@@ -1,6 +1,7 @@
 package com.albrus.shiro.mapper;
 
 import com.albrus.shiro.entity.Resource;
+import com.albrus.shiro.model.ResourceBO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,6 @@ import java.util.List;
 @Component(value = "resourceMapper")
 public interface ResourceMapper extends BaseMapper<Resource> {
 
-    List<Resource> getResourceByUserId(Long userId);
+    List<ResourceBO> getResourceByUserId(Long userId);
 
 }
