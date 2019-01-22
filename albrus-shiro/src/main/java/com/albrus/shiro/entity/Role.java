@@ -2,7 +2,6 @@ package com.albrus.shiro.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.albrus.common.entity.BaseEntity;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 
 import java.io.Serializable;

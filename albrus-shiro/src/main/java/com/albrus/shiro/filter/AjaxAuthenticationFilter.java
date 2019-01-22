@@ -7,7 +7,6 @@ import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.JWTToken;
 import com.albrus.shiro.model.JWTTokenCookie;
 import com.albrus.shiro.service.IUserService;
-import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
