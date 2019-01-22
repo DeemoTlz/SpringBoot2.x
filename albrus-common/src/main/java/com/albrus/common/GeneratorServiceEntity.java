@@ -34,7 +34,7 @@ public class GeneratorServiceEntity {
                 .setAuthor("albrus")
                 .setEnableCache(false)
                 .setOutputDir(projectPath + "/java")
-                .setFileOverride(true);
+                .setFileOverride(false);
         /*if (!serviceNameStartWithI) {
             config.setServiceName("%sService");
         }*/

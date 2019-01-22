@@ -16,14 +16,10 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -44,10 +40,16 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         if (null != jwtToken) {
             //如果存在，则进入 checkJwtToken 方法检查 token 是否正确
             try {
-                return this.checkJwtToken(request, jwtToken);
+                User user = this.checkJwtToken(request, jwtToken);
+
+                // 校验成功，更新token
+                setAuthCookie(request, response, user);
+
+                return true;
             } catch (AuthenticationException e) {
                 new JWTTokenCookie().removeFrom(WebUtils.toHttp(request), WebUtils.toHttp(response));
                 onLoginFailure(null, e, request, response);
+
                 return false;
             }
         } else {
@@ -66,21 +68,14 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
      * @author qi_jiahu
      * @date 2019/1/21 10:31
      * @Param [request, jwtToken]
-     * @return boolean true: 有效
+     * @return User 当前token对应的用户实体
      */
-    private boolean checkJwtToken(ServletRequest request, String jwtToken) {
+    private User checkJwtToken(ServletRequest request, String jwtToken) {
 
         String username = JWTUtil.getUsername(jwtToken);
         if (null == username) {
             throw new UnsupportedTokenException();
         }
-
-        /*ServletContext context = request.getServletContext();
-        ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(context);
-        if (null == ctx) {
-            throw new AuthenticationException();
-        }
-        IUserService userService = ctx.getBean(IUserService.class);*/
 
         User user = userService.getByName(username);
         if (null == user) {
@@ -98,7 +93,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             SecurityUtils.getSubject().login(new JWTToken(username, "", false, request.getRemoteHost(), jwtToken));
         }
 
-        return true;
+        return user;
     }
 
     /**
@@ -129,15 +124,28 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         return new JWTTokenCookie().readValue(WebUtils.toHttp(request), null);
     }
 
-    @Override
-    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
-        //String username = String.valueOf(token.getPrincipal());
-        String password = ((User) subject.getPrincipal()).getPassword();
-
-        String jwtToken = JWTUtil.sign(token.getPrincipal().toString(), password);
+    /**
+     *
+     * @ClassName setAuthCookie 设置JWT token到cookie中
+     *
+     * @author qi_jiahu
+     * @date 2019/1/22 10:34
+     * @Param [request, response, user]
+     * @return java.lang.String JWT token
+     */
+    private String setAuthCookie(ServletRequest request, ServletResponse response, User user) {
+        String jwtToken = JWTUtil.sign(user.getUsername(), user.getPassword());
 
         Cookie cookie = new JWTTokenCookie(jwtToken);
         cookie.saveTo(WebUtils.toHttp(request), WebUtils.toHttp(response));
+
+        return jwtToken;
+    }
+
+    @Override
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+        User user = (User) subject.getPrincipal();
+        String jwtToken = setAuthCookie(request, response, user);
 
         if (isAjax(request)) {
             response.setContentType("application/json;charset=UTF-8");
@@ -160,30 +168,33 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
             try {
                 PrintWriter out = response.getWriter();
+                HttpServletResponse httpResponse = WebUtils.toHttp(response);
+                ErrorRtn rtn;
 
                 if (e instanceof UnknownAccountException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(601);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(601, "账号不存在")));
+                    httpResponse.setStatus(601);
+                    rtn = new ErrorRtn(601, "账号不存在");
                 } else if (e instanceof IncorrectCredentialsException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(602);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(602, "密码错误")));
+                    httpResponse.setStatus(602);
+                    rtn = new ErrorRtn(602, "密码错误");
                 } else if (e instanceof ExcessiveAttemptsException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(603);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(603, "登录失败次数过多")));
+                    httpResponse.setStatus(603);
+                    rtn = new ErrorRtn(603, "登录失败次数过多");
                 } else if (e instanceof DisabledAccountException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(604);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(604, "账号禁用")));
+                    httpResponse.setStatus(604);
+                    rtn = new ErrorRtn(604, "账号禁用");
                 } else if (e instanceof ExpiredCredentialsException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(605);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(605, "账号过期")));
+                    httpResponse.setStatus(605);
+                    rtn = new ErrorRtn(605, "账号过期");
                 } else if (e instanceof UnsupportedTokenException) {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(606);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(606, "Token无效")));
+                    httpResponse.setStatus(606);
+                    rtn = new ErrorRtn(606, "Token无效");
                 } else {
-                    ((WebStatFilter.StatHttpServletResponseWrapper) response).setStatus(607);
-                    out.println(JSONObject.toJSONString(new ErrorRtn(607, "服务器一不小心被怪兽吃掉了Ծ‸Ծ")));
+                    httpResponse.setStatus(607);
+                    rtn = new ErrorRtn(607, "服务器一不小心被怪兽吃掉了Ծ‸Ծ");
                 }
 
+                out.println(JSONObject.toJSONString(rtn));
                 out.flush();
                 out.close();
             } catch (IOException e1) {
