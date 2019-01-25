@@ -36,7 +36,7 @@
         parent_id, name, sort, url, system_id, type, ico, is_show, permission, remarks, deleted
     </sql>
 
-    <select id="getResourceByUserId" resultMap="BaseResultMapWithRoleName" parameterType="long">
+    <select id="getActionsByUserId" resultMap="BaseResultMapWithRoleName" parameterType="long">
         SELECT DISTINCT
           `albrus_role`.`role_name`,
           `albrus_resource`.*
@@ -48,7 +48,20 @@
           INNER JOIN `albrus_role`
             ON `albrus_role`.`id` = `albrus_user_role`.`role_id`
           INNER JOIN `albrus_resource`
-            ON `albrus_role_resource`.`resource_id` = `albrus_resource`.`id`
+            ON `albrus_role_resource`.`resource_id` = `albrus_resource`.`id` AND `albrus_resource`.`type` = 2
+    </select>
+
+    <select id="getContentsByUserId" resultMap="BaseResultMap" parameterType="long">
+        SELECT DISTINCT
+          `albrus_resource`.*
+        FROM
+          `albrus_user_role`
+          INNER JOIN `albrus_role_resource`
+            ON `albrus_user_role`.`admin_id` = #{userId}
+            AND `albrus_user_role`.`role_id` = `albrus_role_resource`.`role_id`
+          INNER JOIN `albrus_resource`
+            ON `albrus_role_resource`.`resource_id` = `albrus_resource`.`id` AND `albrus_resource`.`type` &lt;&gt; 2
+        ORDER BY `albrus_resource`.`type`
     </select>
 
 </mapper>

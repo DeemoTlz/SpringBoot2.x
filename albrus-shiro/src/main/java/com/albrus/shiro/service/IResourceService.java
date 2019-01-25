@@ -16,5 +16,8 @@ import java.util.List;
  */
 public interface IResourceService extends IService<Resource> {
 
-   List<ResourceBO> getResourceByUserId(Long userId);
+   List<ResourceBO> getActionsByUserId(Long userId);
+
+   List<Resource> getContentsByUserId(Long userId);
+
 }

@@ -2,12 +2,17 @@ package com.albrus.shiro.filter;
 
 import com.albrus.common.model.ErrorRtn;
 import com.albrus.common.model.SuccessRtn;
+import com.albrus.common.utils.AlbrusConsts;
 import com.albrus.common.utils.JWTUtil;
+import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.JWTToken;
 import com.albrus.shiro.model.JWTTokenCookie;
+import com.albrus.shiro.service.IResourceService;
 import com.albrus.shiro.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
@@ -21,13 +26,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
     private final IUserService userService;
+    private final IResourceService resourceService;
 
-    public AjaxAuthenticationFilter(IUserService userService) {
+    public AjaxAuthenticationFilter(IUserService userService, IResourceService resourceService) {
         this.userService = userService;
+        this.resourceService = resourceService;
     }
 
     @Override
@@ -146,10 +156,27 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         User user = (User) subject.getPrincipal();
         String jwtToken = setAuthCookie(request, response, user);
 
+        // 获取该用户有哪些菜单
+        List<Resource> contents = resourceService.getContentsByUserId(user.getId());
+        Map<Resource, LinkedList<Resource>> contentsMap = Maps.newLinkedHashMap();
+
+        for (Resource resource : contents) {
+            if (AlbrusConsts.RESOURCE_NO_PARENT == resource.getParentId()) {
+                contentsMap.put(resource, Lists.newLinkedList());
+            } else {
+                for (Resource parent : contentsMap.keySet()) {
+                    if (resource.getParentId() == parent.getId().intValue()) {
+                        contentsMap.get(parent).add(resource);
+                        break;
+                    }
+                }
+            }
+        }
+
         if (isAjax(request)) {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.println(JSONObject.toJSONString(new SuccessRtn("", jwtToken)));
+            out.println(JSONObject.toJSONString(new SuccessRtn(jwtToken, contentsMap)));
 
             out.flush();
             out.close();
@@ -157,6 +184,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             return false;
         }
 
+        request.setAttribute("menu", contentsMap);
         return super.onLoginSuccess(token, subject, request, response);
     }
 

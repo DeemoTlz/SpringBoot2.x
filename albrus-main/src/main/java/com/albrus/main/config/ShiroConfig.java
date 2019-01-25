@@ -3,6 +3,7 @@ package com.albrus.main.config;
 import com.albrus.shiro.filter.AjaxAuthenticationFilter;
 import com.albrus.shiro.model.JWTAndHashedCredentialsMatcher;
 import com.albrus.shiro.realms.AuthRealm;
+import com.albrus.shiro.service.IResourceService;
 import com.albrus.shiro.service.IUserService;
 import com.google.common.collect.Maps;
 import org.apache.shiro.codec.Base64;
@@ -27,9 +28,12 @@ public class ShiroConfig {
 
     private final IUserService userService;
 
+    private final IResourceService resourceService;
+
     @Autowired
-    public ShiroConfig(IUserService userService) {
+    public ShiroConfig(IUserService userService, IResourceService resourceService) {
         this.userService = userService;
+        this.resourceService = resourceService;
     }
 
     @Bean
@@ -50,7 +54,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         Map<String, Filter> filter = Maps.newLinkedHashMap();
-        filter.put("authc", new AjaxAuthenticationFilter(userService));
+        filter.put("authc", new AjaxAuthenticationFilter(userService, resourceService));
         shiroFilterFactoryBean.setFilters(filter);
 
         return shiroFilterFactoryBean;

@@ -17,13 +17,12 @@ import java.util.Date;
  * @ClassName: BaseModel 
  * @Description: TODO
  * @author ouy
- * @param <T>
- * @date 2017年7月8日 下午3:26:26 
+ * @date 2017年7月8日 下午3:26:26
  *
  */
 @SuppressWarnings({"rawtypes", "serial" })
-public abstract class BaseEntity<T extends BaseEntity> extends Model implements Serializable {
-	
+public abstract class BaseEntity extends Model implements Serializable {
+
     @TableId(type= IdType.AUTO)
 	protected Long id;
 

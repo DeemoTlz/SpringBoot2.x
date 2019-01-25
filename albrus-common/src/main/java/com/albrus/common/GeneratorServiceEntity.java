@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;

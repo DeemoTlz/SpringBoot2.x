@@ -1,5 +1,6 @@
 package com.albrus.shiro.realms;
 
+import com.albrus.common.utils.AlbrusConsts;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.ResourceBO;
 import com.albrus.shiro.service.IResourceService;
@@ -47,12 +48,12 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
         User user = (User) principalCollection.getPrimaryPrincipal();
-        List<ResourceBO> resources = resourceService.getResourceByUserId(user.getId());
+        List<ResourceBO> resources = resourceService.getActionsByUserId(user.getId());
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (ResourceBO resource : resources) {
             info.addRole(resource.getRoleName());
-            if (null != resource.getType() && 2 == resource.getType() && null != resource.getPermission()) {
+            if (null != resource.getType() && AlbrusConsts.RESOURCE_TYPE_ACTION == resource.getType() && null != resource.getPermission()) {
                 info.addStringPermission(resource.getPermission());
             }
         }

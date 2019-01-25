@@ -14,7 +14,7 @@ public class JWTTokenCookie extends SimpleCookie {
         this.setMaxAge(-1); // 过期时间
         this.setVersion(1); // 使用的版本号。0表示遵循Netscape的Cookie规范，1表示遵循W3C的RFC 2109规范
         this.setSecure(false); // 是否只能通过https来传递此条cookie
-        this.setHttpOnly(false); // 只有在http请求头中会带有此cookie的信息
+        this.setHttpOnly(true); // 只有在http请求头中会带有此cookie的信息
     }
 
     public JWTTokenCookie(String value) {
@@ -26,7 +26,7 @@ public class JWTTokenCookie extends SimpleCookie {
         this.setMaxAge(-1); // 过期时间
         this.setVersion(1); // 使用的版本号。0表示遵循Netscape的Cookie规范，1表示遵循W3C的RFC 2109规范
         this.setSecure(false); // 是否只能通过https来传递此条cookie
-        this.setHttpOnly(false); // 只有在http请求头中会带有此cookie的信息
+        this.setHttpOnly(true); // 只有在http请求头中会带有此cookie的信息
     }
 
     public static String getAuthorizationHeader() {

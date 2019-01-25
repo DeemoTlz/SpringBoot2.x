@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
  * @since 2019-01-02
  */
 @TableName("albrus_user")
-public class User extends BaseEntity<User> {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

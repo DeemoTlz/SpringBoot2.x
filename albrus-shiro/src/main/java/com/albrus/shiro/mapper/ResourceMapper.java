@@ -19,6 +19,8 @@ import java.util.List;
 @Component(value = "resourceMapper")
 public interface ResourceMapper extends BaseMapper<Resource> {
 
-    List<ResourceBO> getResourceByUserId(Long userId);
+    List<ResourceBO> getActionsByUserId(Long userId);
+
+    List<Resource> getContentsByUserId(Long userId);
 
 }

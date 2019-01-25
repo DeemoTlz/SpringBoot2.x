@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2019-01-21
  */
 @TableName("albrus_resource")
-public class Resource extends BaseEntity<Resource> {
+public class Resource extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -30,7 +30,12 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public List<ResourceBO> getResourceByUserId(Long userId) {
-        return mapper.getResourceByUserId(userId);
+    public List<ResourceBO> getActionsByUserId(Long userId) {
+        return mapper.getActionsByUserId(userId);
+    }
+
+    @Override
+    public List<Resource> getContentsByUserId(Long userId) {
+        return mapper.getContentsByUserId(userId);
     }
 }
