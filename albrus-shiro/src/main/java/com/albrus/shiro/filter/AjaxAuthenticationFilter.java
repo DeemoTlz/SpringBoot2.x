@@ -8,11 +8,13 @@ import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.JWTToken;
 import com.albrus.shiro.model.JWTTokenCookie;
+import com.albrus.shiro.model.MenuBO;
 import com.albrus.shiro.service.IResourceService;
 import com.albrus.shiro.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
@@ -157,18 +159,16 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         String jwtToken = setAuthCookie(request, response, user);
 
         // 获取该用户有哪些菜单
-        List<Resource> contents = resourceService.getContentsByUserId(user.getId());
-        Map<Resource, LinkedList<Resource>> contentsMap = Maps.newLinkedHashMap();
+        List<MenuBO> contents = resourceService.getContentsByUserId(user.getId());
+        List<MenuBO> menus = Lists.newLinkedList();
 
-        for (Resource resource : contents) {
-            if (AlbrusConsts.RESOURCE_NO_PARENT == resource.getParentId()) {
-                contentsMap.put(resource, Lists.newLinkedList());
-            } else {
-                for (Resource parent : contentsMap.keySet()) {
-                    if (resource.getParentId() == parent.getId().intValue()) {
-                        contentsMap.get(parent).add(resource);
-                        break;
-                    }
+        for (MenuBO menu : contents) {
+            // 遍历菜单，找出第一级父级菜单
+            if (AlbrusConsts.RESOURCE_NO_PARENT == menu.getParentId()) {
+                menus.add(menu);
+                // url为空则说明还有子菜单
+                if (StringUtils.isBlank(menu.getUrl())) {
+                    menu.setChilds(this.getChilds(menu.getId().intValue(), contents));
                 }
             }
         }
@@ -176,7 +176,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
         if (isAjax(request)) {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.println(JSONObject.toJSONString(new SuccessRtn(jwtToken, contentsMap)));
+            out.println(JSONObject.toJSONString(new SuccessRtn(jwtToken, menus)));
 
             out.flush();
             out.close();
@@ -184,8 +184,33 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             return false;
         }
 
-        request.setAttribute("menu", contentsMap);
+        request.setAttribute("menu", menus);
         return super.onLoginSuccess(token, subject, request, response);
+    }
+
+    /**
+     *
+     * @ClassName getChilds 获取当前菜单的子菜单
+     *
+     * @author qi_jiahu
+     * @date 2019/1/29 10:51
+     * @Param [id, menus] id: 获取子菜单的菜单id，menus: 所有菜单集合
+     * @return java.util.List<com.albrus.shiro.model.MenuBO>
+     */
+    private List<MenuBO> getChilds(Integer id, List<MenuBO> menus) {
+        List<MenuBO> childs = Lists.newLinkedList();
+
+        for (MenuBO menu : menus) {
+            if (menu.getParentId() == id.intValue()) {
+                childs.add(menu);
+                // url为空则说明还有子菜单
+                if (StringUtils.isBlank(menu.getUrl())) {
+                    menu.setChilds(this.getChilds(menu.getId().intValue(), menus));
+                }
+            }
+        }
+
+        return childs;
     }
 
     @Override

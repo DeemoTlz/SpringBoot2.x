@@ -1,6 +1,7 @@
 package com.albrus.shiro.service;
 
 import com.albrus.shiro.entity.Resource;
+import com.albrus.shiro.model.MenuBO;
 import com.albrus.shiro.model.ResourceBO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,6 +19,6 @@ public interface IResourceService extends IService<Resource> {
 
    List<ResourceBO> getActionsByUserId(Long userId);
 
-   List<Resource> getContentsByUserId(Long userId);
+   List<MenuBO> getContentsByUserId(Long userId);
 
 }

@@ -1,6 +1,7 @@
 package com.albrus.shiro.mapper;
 
 import com.albrus.shiro.entity.Resource;
+import com.albrus.shiro.model.MenuBO;
 import com.albrus.shiro.model.ResourceBO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,6 @@ public interface ResourceMapper extends BaseMapper<Resource> {
 
     List<ResourceBO> getActionsByUserId(Long userId);
 
-    List<Resource> getContentsByUserId(Long userId);
+    List<MenuBO> getContentsByUserId(Long userId);
 
 }

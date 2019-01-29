@@ -53,7 +53,7 @@ public class AuthRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (ResourceBO resource : resources) {
             info.addRole(resource.getRoleName());
-            if (null != resource.getType() && AlbrusConsts.RESOURCE_TYPE_ACTION == resource.getType() && null != resource.getPermission()) {
+            if (null != resource.getPermission()) {
                 info.addStringPermission(resource.getPermission());
             }
         }

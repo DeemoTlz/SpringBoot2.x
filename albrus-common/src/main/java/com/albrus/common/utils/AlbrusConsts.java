@@ -2,7 +2,7 @@ package com.albrus.common.utils;
 
 public class AlbrusConsts {
 
-    /** 资源：ACTION **/
+    /** 资源：顶级菜单 **/
     public static int RESOURCE_NO_PARENT = -1;
 
     /** 资源：目录 **/

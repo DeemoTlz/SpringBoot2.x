@@ -26,6 +26,8 @@
         <result column="role_name" property="roleName" />
     </resultMap>
 
+    <resultMap id="BaseResultMapToMenuBO" type="com.albrus.shiro.model.MenuBO" extends="BaseResultMap" />
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
@@ -51,7 +53,7 @@
             ON `albrus_role_resource`.`resource_id` = `albrus_resource`.`id` AND `albrus_resource`.`type` = 2
     </select>
 
-    <select id="getContentsByUserId" resultMap="BaseResultMap" parameterType="long">
+    <select id="getContentsByUserId" resultMap="BaseResultMapToMenuBO" parameterType="long">
         SELECT DISTINCT
           `albrus_resource`.*
         FROM

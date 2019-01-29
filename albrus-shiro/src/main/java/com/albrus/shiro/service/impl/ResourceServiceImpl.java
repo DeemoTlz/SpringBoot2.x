@@ -2,6 +2,7 @@ package com.albrus.shiro.service.impl;
 
 import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.mapper.ResourceMapper;
+import com.albrus.shiro.model.MenuBO;
 import com.albrus.shiro.model.ResourceBO;
 import com.albrus.shiro.service.IResourceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,7 +36,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public List<Resource> getContentsByUserId(Long userId) {
+    public List<MenuBO> getContentsByUserId(Long userId) {
         return mapper.getContentsByUserId(userId);
     }
 }
