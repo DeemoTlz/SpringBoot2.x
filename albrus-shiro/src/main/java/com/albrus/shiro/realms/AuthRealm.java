@@ -1,6 +1,5 @@
 package com.albrus.shiro.realms;
 
-import com.albrus.common.utils.AlbrusConsts;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.ResourceBO;
 import com.albrus.shiro.service.IResourceService;
