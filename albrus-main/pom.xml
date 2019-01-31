@@ -19,6 +19,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -65,6 +76,8 @@
     </dependencies>
 
     <build>
+        <finalName>ROOT</finalName>
+
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -83,6 +96,15 @@
         </resources>
 
         <plugins>
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+
+                <configuration>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>-->
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -91,6 +113,7 @@
                     <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>com.albrus.main.AlbrusMainApplication</mainClass>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
                     <layout>ZIP</layout>
                 </configuration>
             </plugin>
