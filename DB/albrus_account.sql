@@ -144,8 +144,7 @@ CREATE TABLE `albrus_resource` (
   `sort` int(11) NOT NULL COMMENT '排序',
   `url` varchar(2000) DEFAULT NULL COMMENT '链接',
   `system_id` varchar(20) DEFAULT NULL COMMENT '目标系统',
-  `level` int(11) DEFAULT NULL COMMENT '标记菜单级数',
-  `type` int(11) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `type` int(11) DEFAULT NULL COMMENT '0:功能 1:目录 2:Action',
   `ico` varchar(100) DEFAULT NULL COMMENT '图标',
   `is_show` char(1) NOT NULL COMMENT '是否在菜单中显示',
   `permission` varchar(200) DEFAULT NULL COMMENT '权限标识',
@@ -159,6 +158,8 @@ CREATE TABLE `albrus_resource` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单表';
 
 /*Data for the table `albrus_resource` */
+
+insert  into `albrus_resource`(`id`,`parent_id`,`name`,`sort`,`url`,`system_id`,`type`,`ico`,`is_show`,`permission`,`remarks`,`deleted`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,-1,'Albrus Account',1,NULL,NULL,0,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL),(11,1,'权限管理',11,NULL,NULL,1,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL),(12,1,'日志详情',12,NULL,NULL,1,NULL,'1','shiro:resource:view',NULL,0,NULL,NULL,NULL,NULL),(2,-1,'基础配置',2,NULL,NULL,0,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL),(3,-1,'系统管理',3,NULL,NULL,0,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL),(111,11,'1-1-1',111,NULL,NULL,1,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL),(112,11,'1-1-2',112,NULL,NULL,1,NULL,'1',NULL,NULL,0,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `albrus_role` */
 
@@ -175,9 +176,11 @@ CREATE TABLE `albrus_role` (
   `update_by` int(11) DEFAULT NULL COMMENT '数据更新者',
   `update_time` datetime DEFAULT NULL COMMENT '数据更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='角色表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 /*Data for the table `albrus_role` */
+
+insert  into `albrus_role`(`id`,`role_name`,`description`,`predefined`,`deleted`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,'config','配置',1,0,NULL,NULL,NULL,NULL),(2,'admin','管理',1,0,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `albrus_role_resource` */
 
@@ -196,6 +199,8 @@ CREATE TABLE `albrus_role_resource` (
 
 /*Data for the table `albrus_role_resource` */
 
+insert  into `albrus_role_resource`(`role_id`,`resource_id`,`state`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,1,0,NULL,NULL,NULL,NULL),(1,11,0,NULL,NULL,NULL,NULL),(1,12,0,NULL,NULL,NULL,NULL),(2,111,0,NULL,NULL,NULL,NULL),(2,112,0,NULL,NULL,NULL,NULL),(2,2,0,NULL,NULL,NULL,NULL),(3,3,0,NULL,NULL,NULL,NULL);
+
 /*Table structure for table `albrus_user` */
 
 DROP TABLE IF EXISTS `albrus_user`;
@@ -203,7 +208,8 @@ DROP TABLE IF EXISTS `albrus_user`;
 CREATE TABLE `albrus_user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL DEFAULT '',
-  `password` varchar(128) DEFAULT '',
+  `password` varchar(128) NOT NULL DEFAULT '',
+  `salt` varchar(50) NOT NULL DEFAULT '' COMMENT '加密盐值',
   `begin_time` datetime NOT NULL DEFAULT '2008-01-01 00:00:00',
   `end_time` datetime NOT NULL DEFAULT '2037-01-01 00:00:00',
   `update_pwd_time` datetime DEFAULT NULL,
@@ -220,7 +226,7 @@ CREATE TABLE `albrus_user` (
 
 /*Data for the table `albrus_user` */
 
-insert  into `albrus_user`(`id`,`username`,`password`,`begin_time`,`end_time`,`update_pwd_time`,`predefined`,`pwd_policy`,`descript`,`deleted`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,'123','123','2008-01-01 00:00:00','2037-01-01 00:00:00',NULL,0,NULL,'123',0,NULL,NULL,NULL,NULL);
+insert  into `albrus_user`(`id`,`username`,`password`,`salt`,`begin_time`,`end_time`,`update_pwd_time`,`predefined`,`pwd_policy`,`descript`,`deleted`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,'albrus','1298721D05913A4B61A53A7240E63BF9','O%H3VV#>?NJGk*%_albrus','2008-01-01 00:00:00','2037-01-01 00:00:00',NULL,0,NULL,'123',0,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `albrus_user_role` */
 
@@ -237,6 +243,8 @@ CREATE TABLE `albrus_user_role` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='人员与角色关联表';
 
 /*Data for the table `albrus_user_role` */
+
+insert  into `albrus_user_role`(`admin_id`,`role_id`,`generate_by`,`generate_time`,`update_by`,`update_time`) values (1,1,NULL,NULL,NULL,NULL),(1,2,NULL,NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
