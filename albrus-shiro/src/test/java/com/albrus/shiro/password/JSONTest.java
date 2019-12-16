@@ -35,9 +35,9 @@ public class JSONTest {
         menus.add(menu4);
         menu4.setName("444444444444");
 
-        for (MenuBO e : menus) {
+        /*for (MenuBO e : menus) {
             System.out.println(e.getName());
             menus.remove(e);
-        }
+        }*/
     }
 }
