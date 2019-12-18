@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   mvc:
@@ -16,7 +16,7 @@ spring:
       #mysql驱动
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://172.18.31.180:3306/albrus_account?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
+      url: jdbc:mysql://127.0.0.1:3306/albrus_account?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
       username: root
       password: cyberaudit
       #配置初始化大小/最小/最大
