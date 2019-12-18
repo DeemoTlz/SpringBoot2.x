@@ -4,6 +4,7 @@ import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.model.MenuBO;
 import com.albrus.shiro.model.ResourceBO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,8 +21,8 @@ import java.util.List;
 @Component(value = "resourceMapper")
 public interface ResourceMapper extends BaseMapper<Resource> {
 
-    List<ResourceBO> getActionsByUserId(Long userId);
+    List<ResourceBO> getActionsByUserId(@Param("userId") Long userId);
 
-    List<MenuBO> getContentsByUserId(Long userId);
+    List<MenuBO> getContentsByUserId(@Param("userId") Long userId);
 
 }
