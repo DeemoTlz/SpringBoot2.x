@@ -14,6 +14,10 @@ public abstract class BaseController {
         return new SuccessRtn(msg);
     }
 
+    public <T> Rtn success(T data) {
+        return new SuccessRtn("Succeed", data);
+    }
+
     public <T> Rtn success(String msg, T data) {
         return new SuccessRtn(msg, data);
     }

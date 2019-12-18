@@ -1,16 +1,12 @@
 package com.albrus.consume.controller;
 
 
-import com.albrus.consume.entity.ConsumeCost;
+import com.albrus.common.controller.BaseController;
+import com.albrus.common.model.Rtn;
 import com.albrus.consume.service.IConsumeCostService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-import com.albrus.common.controller.BaseController;
-
-import java.util.List;
 
 /**
  * <p>
@@ -30,10 +26,10 @@ public class ConsumeCostController extends BaseController {
 		this.service = service;
 	}
 
-	@GetMapping
+	@GetMapping("list")
 	// @RequiresPermissions("shiro:consumeCost:view")
-	public List<ConsumeCost> list() {
-		return service.list();
+	public Rtn list() {
+		return super.success(service.list());
 	}
 
 }
