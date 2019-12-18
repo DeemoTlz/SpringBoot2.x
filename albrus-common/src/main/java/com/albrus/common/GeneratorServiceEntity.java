@@ -16,14 +16,14 @@ public class GeneratorServiceEntity {
 
     public static void main(String[] args) {
         String packageName = "com.albrus";
-        String modelName = "shiro";
+        String modelName = "consume";
 
-        generateByTables(packageName, modelName, "albrus_resource");
+        generateByTables(packageName, modelName, "albrus_consume_cost", "albrus_consume_type");
     }
 
     private static void generateByTables(String packageName, String modelName, String... tableNames) {
-        String projectPath = "D:/WorkSpace/IDEA/albrusAccount/albrus-" + modelName + "/src/main";
-        String dbUrl = "jdbc:mysql://127.0.0.1:3306/albrus_account?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8";
+        String projectPath = "./albrus-" + modelName + "/src/main";
+        String dbUrl = "jdbc:mysql://172.18.31.180:3306/albrus_account?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8";
 
         GlobalConfig config = new GlobalConfig();
         config.setActiveRecord(true)

@@ -4,7 +4,6 @@ import com.albrus.common.model.ErrorRtn;
 import com.albrus.common.model.SuccessRtn;
 import com.albrus.common.utils.AlbrusConsts;
 import com.albrus.common.utils.JWTUtil;
-import com.albrus.shiro.entity.Resource;
 import com.albrus.shiro.entity.User;
 import com.albrus.shiro.model.JWTToken;
 import com.albrus.shiro.model.JWTTokenCookie;
@@ -13,7 +12,6 @@ import com.albrus.shiro.service.IResourceService;
 import com.albrus.shiro.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -23,14 +21,13 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.util.WebUtils;
 
-import javax.servlet.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
@@ -157,6 +154,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         User user = (User) subject.getPrincipal();
         String jwtToken = setAuthCookie(request, response, user);
+        WebUtils.toHttp(request).getSession(true).setAttribute("username", user.getUsername());
 
         // 获取该用户有哪些菜单
         List<MenuBO> contents = resourceService.getContentsByUserId(user.getId());
