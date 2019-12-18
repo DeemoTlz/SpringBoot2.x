@@ -16,7 +16,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -91,9 +91,13 @@ public class ShiroConfig {
         securityManager.setRememberMeManager(rememberMeManager);
 
         // 去掉JSSIONID小尾巴
-        DefaultWebSessionManager webSessionManager = new DefaultWebSessionManager();
+        /*DefaultWebSessionManager webSessionManager = new DefaultWebSessionManager();
         webSessionManager.setSessionIdUrlRewritingEnabled(false);
-        securityManager.setSessionManager(webSessionManager);
+        securityManager.setSessionManager(webSessionManager);*/
+
+        // DefaultWebSecurityManager使用的默认实现，用于Web环境，其直接使用Servlet容器的会话
+        // 这个session管理器使用了servlet,所以可以在web.xml文件中设置session超时时间
+        securityManager.setSessionManager(new ServletContainerSessionManager());
 
         /*
          * 关闭shiro自带的session，详情见文档
