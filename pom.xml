@@ -37,7 +37,7 @@
         <jackson.annotations.version>2.9.0</jackson.annotations.version>
         <shiro.version>1.4.0</shiro.version>
         <commons.lang3.version>3.8.1</commons.lang3.version>
-        <google.guava>27.0.1-jre</google.guava>
+        <google.guava>29.0-jre</google.guava>
         <fastjson.version>1.2.54</fastjson.version>
         <jwt.version>3.4.1</jwt.version>
     </properties>
